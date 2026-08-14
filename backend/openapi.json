@@ -1,0 +1,1798 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "CSV Analyser API",
+        "description": "High-performance FastAPI backend for CSV data analysis, Open Icecat product enrichment, preview, and visualizations with MongoDB persistence.",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/csv/enrich": {
+            "post": {
+                "tags": [
+                    "CSV Enrichment, Processing & Web Verification"
+                ],
+                "summary": "Enrich Csv Dataset",
+                "description": "Upload a CSV file, enrich all products with Open Icecat technical specs & media,\nsave the newly generated enriched CSV, and return enrichment statistics and preview.",
+                "operationId": "enrich_csv_dataset_api_csv_enrich_post",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_enrich_csv_dataset_api_csv_enrich_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EnrichmentSummary"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/verify": {
+            "post": {
+                "tags": [
+                    "CSV Enrichment, Processing & Web Verification"
+                ],
+                "summary": "Verify Csv Dataset",
+                "description": "Upload a CSV, audit each product row against live Google/DuckDuckGo web index data,\ncalculate data closeness/fidelity scores, detect discrepancies, and return comprehensive insights.",
+                "operationId": "verify_csv_dataset_api_csv_verify_post",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_verify_csv_dataset_api_csv_verify_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VerificationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/{file_id}/download-verified": {
+            "get": {
+                "tags": [
+                    "CSV Enrichment, Processing & Web Verification"
+                ],
+                "summary": "Download Verified Csv",
+                "description": "Download the verified CSV file containing web closeness scores, verification status, and audit insights.",
+                "operationId": "download_verified_csv_api_csv__file_id__download_verified_get",
+                "parameters": [
+                    {
+                        "name": "file_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "File Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/{file_id}/download-enriched": {
+            "get": {
+                "tags": [
+                    "CSV Enrichment, Processing & Web Verification"
+                ],
+                "summary": "Download Enriched Csv",
+                "description": "Download the generated enriched CSV file with all Open Icecat and technical parameters.",
+                "operationId": "download_enriched_csv_api_csv__file_id__download_enriched_get",
+                "parameters": [
+                    {
+                        "name": "file_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "File Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/enrich/stream": {
+            "post": {
+                "tags": [
+                    "CSV Enrichment, Processing & Web Verification"
+                ],
+                "summary": "Stream Enriched Csv",
+                "description": "Directly streams back the enriched CSV file as an attachment without requiring a secondary download.",
+                "operationId": "stream_enriched_csv_api_csv_enrich_stream_post",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_stream_enriched_csv_api_csv_enrich_stream_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/verify/single": {
+            "post": {
+                "tags": [
+                    "CSV Enrichment, Processing & Web Verification"
+                ],
+                "summary": "Verify Single Product",
+                "description": "Audit and cross-verify a single Brand + Model against live Google/DuckDuckGo web index data.",
+                "operationId": "verify_single_product_api_csv_verify_single_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SingleVerificationRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SingleVerificationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/enrich/item": {
+            "post": {
+                "tags": [
+                    "CSV Enrichment, Processing & Web Verification"
+                ],
+                "summary": "Enrich Single Product",
+                "description": "Query Open Icecat directly for a single Brand + Model Code combination.",
+                "operationId": "enrich_single_product_api_csv_enrich_item_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SingleEnrichmentRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SingleEnrichmentResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/upload": {
+            "post": {
+                "tags": [
+                    "CSV Analysis"
+                ],
+                "summary": "Upload Csv",
+                "description": "Upload a CSV file, parse it, and return metadata with preliminary statistical summary.\nAlso saves analysis record into MongoDB if connected.",
+                "operationId": "upload_csv_api_csv_upload_post",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_upload_csv_api_csv_upload_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CSVSummaryResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/datasets": {
+            "get": {
+                "tags": [
+                    "CSV Analysis"
+                ],
+                "summary": "List Datasets",
+                "description": "List uploaded dataset records stored in MongoDB.",
+                "operationId": "list_datasets_api_csv_datasets_get",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "default": 50,
+                            "title": "Limit"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "additionalProperties": true
+                                    },
+                                    "title": "Response List Datasets Api Csv Datasets Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/{file_id}/metadata": {
+            "get": {
+                "tags": [
+                    "CSV Analysis"
+                ],
+                "summary": "Get Metadata",
+                "description": "Get detailed dataset metadata (row/col count, memory usage, duplicate count, null count).",
+                "operationId": "get_metadata_api_csv__file_id__metadata_get",
+                "parameters": [
+                    {
+                        "name": "file_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "File Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CSVMetadata"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/{file_id}/summary": {
+            "get": {
+                "tags": [
+                    "CSV Analysis"
+                ],
+                "summary": "Get Summary",
+                "description": "Get full statistical summary, column-level distributions, and correlation matrix.",
+                "operationId": "get_summary_api_csv__file_id__summary_get",
+                "parameters": [
+                    {
+                        "name": "file_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "File Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CSVSummaryResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/{file_id}/preview": {
+            "get": {
+                "tags": [
+                    "CSV Analysis"
+                ],
+                "summary": "Get Preview",
+                "description": "Get paginated rows of the dataset.",
+                "operationId": "get_preview_api_csv__file_id__preview_get",
+                "parameters": [
+                    {
+                        "name": "file_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "File Id"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "description": "Page number",
+                            "default": 1,
+                            "title": "Page"
+                        },
+                        "description": "Page number"
+                    },
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 500,
+                            "minimum": 1,
+                            "description": "Number of rows per page",
+                            "default": 20,
+                            "title": "Page Size"
+                        },
+                        "description": "Number of rows per page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CSVPreviewResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/filter": {
+            "post": {
+                "tags": [
+                    "CSV Analysis"
+                ],
+                "summary": "Filter Dataset",
+                "description": "Filter, sort, and paginate rows based on column conditions.",
+                "operationId": "filter_dataset_api_csv_filter_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FilterRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CSVPreviewResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/chart": {
+            "post": {
+                "tags": [
+                    "CSV Analysis"
+                ],
+                "summary": "Get Chart Data",
+                "description": "Generate aggregated data points for visual charts (bar, line, pie, histogram).",
+                "operationId": "get_chart_data_api_csv_chart_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChartDataRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChartDataResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/{file_id}/download": {
+            "get": {
+                "tags": [
+                    "CSV Analysis"
+                ],
+                "summary": "Download File",
+                "description": "Download the CSV file.",
+                "operationId": "download_file_api_csv__file_id__download_get",
+                "parameters": [
+                    {
+                        "name": "file_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "File Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/csv/{file_id}": {
+            "delete": {
+                "tags": [
+                    "CSV Analysis"
+                ],
+                "summary": "Delete Dataset",
+                "description": "Delete dataset record from MongoDB and local storage.",
+                "operationId": "delete_dataset_api_csv__file_id__delete",
+                "parameters": [
+                    {
+                        "name": "file_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "File Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "summary": "Root",
+                "operationId": "root__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "summary": "Health Check",
+                "operationId": "health_check_health_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/db/status": {
+            "get": {
+                "summary": "Db Status",
+                "description": "Detailed MongoDB connection status and ping check.",
+                "operationId": "db_status_api_db_status_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Body_enrich_csv_dataset_api_csv_enrich_post": {
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "contentMediaType": "application/octet-stream",
+                        "title": "File",
+                        "description": "CSV file with product codes/brands"
+                    },
+                    "brand_column": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Brand Column",
+                        "description": "Optional column name for Brand"
+                    },
+                    "model_column": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Model Column",
+                        "description": "Optional column name for Model/Product Code"
+                    },
+                    "description_column": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Description Column",
+                        "description": "Optional column name for Product Description/Title"
+                    },
+                    "ean_column": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Ean Column",
+                        "description": "Optional column name for EAN/GTIN"
+                    },
+                    "include_web_scraping": {
+                        "type": "boolean",
+                        "title": "Include Web Scraping",
+                        "description": "Enable web scraping fallback for missing data",
+                        "default": true
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file"
+                ],
+                "title": "Body_enrich_csv_dataset_api_csv_enrich_post"
+            },
+            "Body_stream_enriched_csv_api_csv_enrich_stream_post": {
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "contentMediaType": "application/octet-stream",
+                        "title": "File"
+                    },
+                    "brand_column": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Brand Column"
+                    },
+                    "model_column": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Model Column"
+                    },
+                    "include_web_scraping": {
+                        "type": "boolean",
+                        "title": "Include Web Scraping",
+                        "default": true
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file"
+                ],
+                "title": "Body_stream_enriched_csv_api_csv_enrich_stream_post"
+            },
+            "Body_upload_csv_api_csv_upload_post": {
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "contentMediaType": "application/octet-stream",
+                        "title": "File"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file"
+                ],
+                "title": "Body_upload_csv_api_csv_upload_post"
+            },
+            "Body_verify_csv_dataset_api_csv_verify_post": {
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "contentMediaType": "application/octet-stream",
+                        "title": "File",
+                        "description": "CSV file to cross-verify against live DuckDuckGo web data"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file"
+                ],
+                "title": "Body_verify_csv_dataset_api_csv_verify_post"
+            },
+            "CSVMetadata": {
+                "properties": {
+                    "file_id": {
+                        "type": "string",
+                        "title": "File Id"
+                    },
+                    "filename": {
+                        "type": "string",
+                        "title": "Filename"
+                    },
+                    "row_count": {
+                        "type": "integer",
+                        "title": "Row Count"
+                    },
+                    "column_count": {
+                        "type": "integer",
+                        "title": "Column Count"
+                    },
+                    "file_size_bytes": {
+                        "type": "integer",
+                        "title": "File Size Bytes"
+                    },
+                    "columns": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Columns"
+                    },
+                    "column_types": {
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "type": "object",
+                        "title": "Column Types"
+                    },
+                    "memory_usage_kb": {
+                        "type": "number",
+                        "title": "Memory Usage Kb"
+                    },
+                    "total_null_cells": {
+                        "type": "integer",
+                        "title": "Total Null Cells"
+                    },
+                    "duplicate_rows": {
+                        "type": "integer",
+                        "title": "Duplicate Rows"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file_id",
+                    "filename",
+                    "row_count",
+                    "column_count",
+                    "file_size_bytes",
+                    "columns",
+                    "column_types",
+                    "memory_usage_kb",
+                    "total_null_cells",
+                    "duplicate_rows"
+                ],
+                "title": "CSVMetadata"
+            },
+            "CSVPreviewResponse": {
+                "properties": {
+                    "file_id": {
+                        "type": "string",
+                        "title": "File Id"
+                    },
+                    "total_rows": {
+                        "type": "integer",
+                        "title": "Total Rows"
+                    },
+                    "columns": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Columns"
+                    },
+                    "rows": {
+                        "items": {
+                            "additionalProperties": true,
+                            "type": "object"
+                        },
+                        "type": "array",
+                        "title": "Rows"
+                    },
+                    "page": {
+                        "type": "integer",
+                        "title": "Page"
+                    },
+                    "page_size": {
+                        "type": "integer",
+                        "title": "Page Size"
+                    },
+                    "total_pages": {
+                        "type": "integer",
+                        "title": "Total Pages"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file_id",
+                    "total_rows",
+                    "columns",
+                    "rows",
+                    "page",
+                    "page_size",
+                    "total_pages"
+                ],
+                "title": "CSVPreviewResponse"
+            },
+            "CSVSummaryResponse": {
+                "properties": {
+                    "metadata": {
+                        "$ref": "#/components/schemas/CSVMetadata"
+                    },
+                    "columns_summary": {
+                        "items": {
+                            "$ref": "#/components/schemas/ColumnSummary"
+                        },
+                        "type": "array",
+                        "title": "Columns Summary"
+                    },
+                    "correlations": {
+                        "anyOf": [
+                            {
+                                "additionalProperties": {
+                                    "additionalProperties": {
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
+                                    },
+                                    "type": "object"
+                                },
+                                "type": "object"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Correlations"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "metadata",
+                    "columns_summary"
+                ],
+                "title": "CSVSummaryResponse"
+            },
+            "ChartDataRequest": {
+                "properties": {
+                    "file_id": {
+                        "type": "string",
+                        "title": "File Id"
+                    },
+                    "x_column": {
+                        "type": "string",
+                        "title": "X Column"
+                    },
+                    "y_column": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Y Column"
+                    },
+                    "chart_type": {
+                        "type": "string",
+                        "title": "Chart Type",
+                        "description": "bar, line, scatter, pie, histogram, box",
+                        "default": "bar"
+                    },
+                    "aggregation": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Aggregation",
+                        "description": "count, sum, avg, min, max"
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "title": "Limit",
+                        "default": 50
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file_id",
+                    "x_column"
+                ],
+                "title": "ChartDataRequest"
+            },
+            "ChartDataResponse": {
+                "properties": {
+                    "file_id": {
+                        "type": "string",
+                        "title": "File Id"
+                    },
+                    "chart_type": {
+                        "type": "string",
+                        "title": "Chart Type"
+                    },
+                    "x_column": {
+                        "type": "string",
+                        "title": "X Column"
+                    },
+                    "y_column": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Y Column"
+                    },
+                    "labels": {
+                        "items": {},
+                        "type": "array",
+                        "title": "Labels"
+                    },
+                    "values": {
+                        "items": {},
+                        "type": "array",
+                        "title": "Values"
+                    },
+                    "series": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "additionalProperties": true,
+                                    "type": "object"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Series"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file_id",
+                    "chart_type",
+                    "x_column",
+                    "labels",
+                    "values"
+                ],
+                "title": "ChartDataResponse"
+            },
+            "ColumnSummary": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "dtype": {
+                        "type": "string",
+                        "title": "Dtype"
+                    },
+                    "null_count": {
+                        "type": "integer",
+                        "title": "Null Count"
+                    },
+                    "null_percentage": {
+                        "type": "number",
+                        "title": "Null Percentage"
+                    },
+                    "unique_count": {
+                        "type": "integer",
+                        "title": "Unique Count"
+                    },
+                    "sample_values": {
+                        "items": {},
+                        "type": "array",
+                        "title": "Sample Values",
+                        "default": []
+                    },
+                    "stats": {
+                        "additionalProperties": true,
+                        "type": "object",
+                        "title": "Stats",
+                        "default": {}
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "dtype",
+                    "null_count",
+                    "null_percentage",
+                    "unique_count"
+                ],
+                "title": "ColumnSummary"
+            },
+            "DatasetInsights": {
+                "properties": {
+                    "total_items_checked": {
+                        "type": "integer",
+                        "title": "Total Items Checked"
+                    },
+                    "average_closeness_score": {
+                        "type": "number",
+                        "title": "Average Closeness Score"
+                    },
+                    "accuracy_grade": {
+                        "type": "string",
+                        "title": "Accuracy Grade"
+                    },
+                    "high_confidence_items": {
+                        "type": "integer",
+                        "title": "High Confidence Items"
+                    },
+                    "moderate_confidence_items": {
+                        "type": "integer",
+                        "title": "Moderate Confidence Items"
+                    },
+                    "discrepancy_items": {
+                        "type": "integer",
+                        "title": "Discrepancy Items"
+                    },
+                    "overall_dataset_verdict": {
+                        "type": "string",
+                        "title": "Overall Dataset Verdict"
+                    },
+                    "key_takeaways": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Key Takeaways",
+                        "default": []
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "total_items_checked",
+                    "average_closeness_score",
+                    "accuracy_grade",
+                    "high_confidence_items",
+                    "moderate_confidence_items",
+                    "discrepancy_items",
+                    "overall_dataset_verdict"
+                ],
+                "title": "DatasetInsights"
+            },
+            "EnrichmentSummary": {
+                "properties": {
+                    "file_id": {
+                        "type": "string",
+                        "title": "File Id"
+                    },
+                    "original_filename": {
+                        "type": "string",
+                        "title": "Original Filename"
+                    },
+                    "enriched_filename": {
+                        "type": "string",
+                        "title": "Enriched Filename"
+                    },
+                    "total_rows": {
+                        "type": "integer",
+                        "title": "Total Rows"
+                    },
+                    "matched_icecat_count": {
+                        "type": "integer",
+                        "title": "Matched Icecat Count"
+                    },
+                    "web_enriched_count": {
+                        "type": "integer",
+                        "title": "Web Enriched Count",
+                        "default": 0
+                    },
+                    "total_enriched_count": {
+                        "type": "integer",
+                        "title": "Total Enriched Count",
+                        "default": 0
+                    },
+                    "match_rate_percentage": {
+                        "type": "number",
+                        "title": "Match Rate Percentage"
+                    },
+                    "brand_column_used": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Brand Column Used"
+                    },
+                    "model_column_used": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Model Column Used"
+                    },
+                    "description_column_used": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Description Column Used"
+                    },
+                    "ean_column_used": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Ean Column Used"
+                    },
+                    "new_columns_added": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "New Columns Added"
+                    },
+                    "download_url": {
+                        "type": "string",
+                        "title": "Download Url"
+                    },
+                    "preview_rows": {
+                        "items": {
+                            "additionalProperties": true,
+                            "type": "object"
+                        },
+                        "type": "array",
+                        "title": "Preview Rows",
+                        "default": []
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file_id",
+                    "original_filename",
+                    "enriched_filename",
+                    "total_rows",
+                    "matched_icecat_count",
+                    "match_rate_percentage",
+                    "new_columns_added",
+                    "download_url"
+                ],
+                "title": "EnrichmentSummary"
+            },
+            "FilterCondition": {
+                "properties": {
+                    "column": {
+                        "type": "string",
+                        "title": "Column"
+                    },
+                    "operator": {
+                        "type": "string",
+                        "title": "Operator",
+                        "description": "Operator: equals, not_equals, contains, startswith, endswith, gt, gte, lt, lte, is_null, is_not_null"
+                    },
+                    "value": {
+                        "anyOf": [
+                            {},
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Value"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "column",
+                    "operator"
+                ],
+                "title": "FilterCondition"
+            },
+            "FilterRequest": {
+                "properties": {
+                    "file_id": {
+                        "type": "string",
+                        "title": "File Id"
+                    },
+                    "conditions": {
+                        "items": {
+                            "$ref": "#/components/schemas/FilterCondition"
+                        },
+                        "type": "array",
+                        "title": "Conditions",
+                        "default": []
+                    },
+                    "sort_by": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Sort By"
+                    },
+                    "sort_ascending": {
+                        "type": "boolean",
+                        "title": "Sort Ascending",
+                        "default": true
+                    },
+                    "page": {
+                        "type": "integer",
+                        "title": "Page",
+                        "default": 1
+                    },
+                    "page_size": {
+                        "type": "integer",
+                        "title": "Page Size",
+                        "default": 20
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file_id"
+                ],
+                "title": "FilterRequest"
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "SingleEnrichmentRequest": {
+                "properties": {
+                    "brand": {
+                        "type": "string",
+                        "title": "Brand",
+                        "description": "Brand name, e.g. HP, Lenovo, LG, Samsung"
+                    },
+                    "model_code": {
+                        "type": "string",
+                        "title": "Model Code",
+                        "description": "Model number or product code, e.g. RJ459AV, 20X30043UK"
+                    },
+                    "gtin": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Gtin",
+                        "description": "Optional EAN/GTIN barcode number"
+                    },
+                    "include_web_scraping": {
+                        "type": "boolean",
+                        "title": "Include Web Scraping",
+                        "description": "Whether to use web scraping if Icecat lookup has missing fields",
+                        "default": true
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "brand",
+                    "model_code"
+                ],
+                "title": "SingleEnrichmentRequest"
+            },
+            "SingleEnrichmentResponse": {
+                "properties": {
+                    "brand": {
+                        "type": "string",
+                        "title": "Brand"
+                    },
+                    "model_code": {
+                        "type": "string",
+                        "title": "Model Code"
+                    },
+                    "icecat_id": {
+                        "type": "string",
+                        "title": "Icecat Id"
+                    },
+                    "icecat_category": {
+                        "type": "string",
+                        "title": "Icecat Category"
+                    },
+                    "icecat_title": {
+                        "type": "string",
+                        "title": "Icecat Title"
+                    },
+                    "short_description": {
+                        "type": "string",
+                        "title": "Short Description"
+                    },
+                    "long_description": {
+                        "type": "string",
+                        "title": "Long Description"
+                    },
+                    "product_image_url": {
+                        "type": "string",
+                        "title": "Product Image Url"
+                    },
+                    "technical_specs": {
+                        "type": "string",
+                        "title": "Technical Specs"
+                    },
+                    "bullet_features": {
+                        "type": "string",
+                        "title": "Bullet Features"
+                    },
+                    "estimated_price": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Estimated Price",
+                        "default": "N/A"
+                    },
+                    "hardware_technology": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Hardware Technology",
+                        "default": "N/A"
+                    },
+                    "power_spec": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Power Spec",
+                        "default": "N/A"
+                    },
+                    "icecat_status": {
+                        "type": "string",
+                        "title": "Icecat Status"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "brand",
+                    "model_code",
+                    "icecat_id",
+                    "icecat_category",
+                    "icecat_title",
+                    "short_description",
+                    "long_description",
+                    "product_image_url",
+                    "technical_specs",
+                    "bullet_features",
+                    "icecat_status"
+                ],
+                "title": "SingleEnrichmentResponse"
+            },
+            "SingleVerificationRequest": {
+                "properties": {
+                    "brand": {
+                        "type": "string",
+                        "title": "Brand",
+                        "description": "Brand name, e.g. Samsung, LG, HP"
+                    },
+                    "model_code": {
+                        "type": "string",
+                        "title": "Model Code",
+                        "description": "Model number or part code, e.g. AR18CY5A, OLED55C3"
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Description",
+                        "description": "Optional product description/variant, e.g. 1.5 Ton Inverter AC",
+                        "default": ""
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "brand",
+                    "model_code"
+                ],
+                "title": "SingleVerificationRequest"
+            },
+            "SingleVerificationResponse": {
+                "properties": {
+                    "brand": {
+                        "type": "string",
+                        "title": "Brand"
+                    },
+                    "model_code": {
+                        "type": "string",
+                        "title": "Model Code"
+                    },
+                    "web_closeness_score": {
+                        "type": "string",
+                        "title": "Web Closeness Score"
+                    },
+                    "closeness_percentage": {
+                        "type": "number",
+                        "title": "Closeness Percentage"
+                    },
+                    "verification_status": {
+                        "type": "string",
+                        "title": "Verification Status"
+                    },
+                    "verified_market_title": {
+                        "type": "string",
+                        "title": "Verified Market Title"
+                    },
+                    "spec_verification_insights": {
+                        "type": "string",
+                        "title": "Spec Verification Insights"
+                    },
+                    "live_web_reference": {
+                        "type": "string",
+                        "title": "Live Web Reference"
+                    },
+                    "brand_verified": {
+                        "type": "boolean",
+                        "title": "Brand Verified"
+                    },
+                    "model_verified": {
+                        "type": "boolean",
+                        "title": "Model Verified"
+                    },
+                    "specs_verified": {
+                        "type": "boolean",
+                        "title": "Specs Verified"
+                    },
+                    "detected_discrepancies": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Detected Discrepancies",
+                        "default": []
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "brand",
+                    "model_code",
+                    "web_closeness_score",
+                    "closeness_percentage",
+                    "verification_status",
+                    "verified_market_title",
+                    "spec_verification_insights",
+                    "live_web_reference",
+                    "brand_verified",
+                    "model_verified",
+                    "specs_verified"
+                ],
+                "title": "SingleVerificationResponse"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    },
+                    "input": {
+                        "title": "Input"
+                    },
+                    "ctx": {
+                        "type": "object",
+                        "title": "Context"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            },
+            "VerificationResponse": {
+                "properties": {
+                    "file_id": {
+                        "type": "string",
+                        "title": "File Id"
+                    },
+                    "original_filename": {
+                        "type": "string",
+                        "title": "Original Filename"
+                    },
+                    "verified_filename": {
+                        "type": "string",
+                        "title": "Verified Filename"
+                    },
+                    "dataset_insights": {
+                        "$ref": "#/components/schemas/DatasetInsights"
+                    },
+                    "preview_rows": {
+                        "items": {
+                            "additionalProperties": true,
+                            "type": "object"
+                        },
+                        "type": "array",
+                        "title": "Preview Rows",
+                        "default": []
+                    },
+                    "download_url": {
+                        "type": "string",
+                        "title": "Download Url"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file_id",
+                    "original_filename",
+                    "verified_filename",
+                    "dataset_insights",
+                    "download_url"
+                ],
+                "title": "VerificationResponse"
+            }
+        }
+    }
+}

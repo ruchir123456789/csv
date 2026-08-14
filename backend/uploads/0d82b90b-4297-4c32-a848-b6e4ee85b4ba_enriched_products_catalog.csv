@@ -1,0 +1,5 @@
+﻿Item_ID,Brand,Manufacturer_Part_No,Inventory_Qty,icecat_id,icecat_category,icecat_title,short_description,long_description,product_image_url,technical_specs,bullet_features,icecat_status,estimated_price,hardware_technology,power_spec
+101,HP,RJ459AV,15,N/A,Unknown,N/A,N/A,Product not indexed in Open Icecat catalog,N/A,N/A,N/A,NOT_FOUND,Check Live Sites,Standard,N/A
+102,Lenovo,20X30043UK,24,N/A,Unknown,N/A,N/A,Icecat lookup error: Expecting value: line 1 column 1 (char 0),N/A,N/A,N/A,NOT_FOUND,Check Live Sites,Standard,N/A
+103,LG,GL-B201ABPY,8,N/A,Unknown,N/A,N/A,Icecat lookup error: Expecting value: line 1 column 1 (char 0),N/A,N/A,N/A,NOT_FOUND,"₹1,100/M",Inverter Technology,Energy Star Certified
+104,Samsung,WW90T554DAN,12,N/A,Unknown,N/A,N/A,Icecat lookup error: Expecting value: line 1 column 1 (char 0),N/A,N/A,N/A,NOT_FOUND,Check Live Sites,Inverter Technology,WHILE
