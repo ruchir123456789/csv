@@ -17,10 +17,10 @@ class Settings(BaseSettings):
     UPLOAD_DIR: Path = UPLOAD_DIR
     MAX_FILE_SIZE_MB: int = 50
     
-    # MongoDB Configuration
-    MONGODB_URL: str = "mongodb://localhost:27017"
-    DATABASE_NAME: str = "csv_analyser_db"
-    MONGO_CONNECT_TIMEOUT_MS: int = 5000
+    # MongoDB Configuration (supports MONGODB_URL and MONGODB_URI)
+    MONGODB_URL: str = os.getenv("MONGODB_URL") or os.getenv("MONGODB_URI") or "mongodb://localhost:27017"
+    DATABASE_NAME: str = os.getenv("DATABASE_NAME") or os.getenv("MONGODB_DB_NAME") or "csv_analyser_db"
+    MONGO_CONNECT_TIMEOUT_MS: int = 10000
     
     # Open Icecat API Configuration
     ICECAT_USERNAME: str = "openicecat-live"
@@ -32,8 +32,10 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: List[str] = [
         "http://localhost:3000",
         "http://localhost:5173",
+        "http://localhost:5174",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:5173",
+        "http://127.0.0.1:5174",
         "*"
     ]
 
