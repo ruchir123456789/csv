@@ -1,0 +1,26 @@
+services:
+  # FastAPI Backend Web Service
+  - type: web
+    name: csv-analyser-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python run.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: ENVIRONMENT
+        value: production
+      - key: DATABASE_NAME
+        value: csv_analyser_db
+
+  # React Vite Frontend Static Site
+  - type: static
+    name: csv-analyser-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

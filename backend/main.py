@@ -21,14 +21,15 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Set up CORS middleware
+# Set up CORS middleware to support local and deployed Render origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.ALLOWED_ORIGINS,
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Register routers
 app.include_router(csv_enrich_router, prefix=settings.API_V1_STR)
