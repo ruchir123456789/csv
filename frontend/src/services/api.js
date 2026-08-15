@@ -1,11 +1,14 @@
 import axios from 'axios';
 
-const API_BASE = '/api';
+// In production, uses the deployed backend URL (e.g. https://your-backend.onrender.com)
+// In local development, uses the relative path with Vite proxy
+const SERVER_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+const API_BASE = `${SERVER_URL}/api`;
 
 export const api = {
   // System Health
   async getHealth() {
-    const res = await axios.get('/health');
+    const res = await axios.get(`${SERVER_URL}/health`);
     return res.data;
   },
 
