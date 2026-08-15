@@ -88,7 +88,7 @@ export default function UploadHero({ onUpload, isLoading, uploadProgress }) {
           <span>Next-Gen CSV Intelligence & Catalog Enrichment</span>
         </div>
 
-        <h1 style={{
+        <h1 className="responsive-hero-title" style={{
           fontSize: '2.75rem',
           fontWeight: '900',
           lineHeight: '1.2',
@@ -100,7 +100,7 @@ export default function UploadHero({ onUpload, isLoading, uploadProgress }) {
           Upload, Enrich & Verify Your Product Datasets
         </h1>
 
-        <p style={{
+        <p className="responsive-hero-desc" style={{
           fontSize: '1.1rem',
           color: 'var(--text-muted)',
           maxWidth: '720px',
@@ -113,7 +113,7 @@ export default function UploadHero({ onUpload, isLoading, uploadProgress }) {
       </div>
 
       {/* Upload Box Card */}
-      <div className="glass-panel" style={{ padding: '36px', position: 'relative', overflow: 'hidden' }}>
+      <div className="glass-panel responsive-panel" style={{ padding: '36px', position: 'relative', overflow: 'hidden' }}>
         {/* Glowing Decorative Backdrop */}
         <div style={{
           position: 'absolute',
@@ -220,7 +220,7 @@ export default function UploadHero({ onUpload, isLoading, uploadProgress }) {
           </div>
 
           {/* Action Buttons */}
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div className="responsive-btn-group" style={{ display: 'flex', gap: '12px' }}>
             <button
               type="button"
               onClick={handleLoadSample}

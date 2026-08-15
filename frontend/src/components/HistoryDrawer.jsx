@@ -18,7 +18,7 @@ export default function HistoryDrawer({ isOpen, onClose, history, onLoadDataset,
       zIndex: 90
     }} onClick={onClose}>
       <div
-        className="glass-panel"
+        className="glass-panel responsive-drawer"
         style={{
           width: '100%',
           maxWidth: '460px',

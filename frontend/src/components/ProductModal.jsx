@@ -78,7 +78,7 @@ export default function ProductModal({ product, onClose }) {
       padding: '20px'
     }} onClick={onClose}>
       <div 
-        className="glass-panel" 
+        className="glass-panel responsive-modal" 
         style={{
           width: '100%',
           maxWidth: '840px',

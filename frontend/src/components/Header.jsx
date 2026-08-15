@@ -11,7 +11,7 @@ export default function Header({ activeTab, setActiveTab, hasData, dbConnected, 
       top: 0,
       zIndex: 50
     }}>
-      <div style={{
+      <div className="responsive-header" style={{
         maxWidth: '1440px',
         margin: '0 auto',
         padding: '16px 24px',
@@ -31,7 +31,8 @@ export default function Header({ activeTab, setActiveTab, hasData, dbConnected, 
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 20px rgba(16, 185, 129, 0.35)'
+            boxShadow: '0 0 20px rgba(16, 185, 129, 0.35)',
+            flexShrink: 0
           }}>
             <Sparkles size={22} color="#ffffff" />
           </div>
@@ -56,7 +57,7 @@ export default function Header({ activeTab, setActiveTab, hasData, dbConnected, 
         </div>
 
         {/* Navigation Tabs */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(15, 23, 42, 0.8)', padding: '4px', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+        <nav className="responsive-nav" style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(15, 23, 42, 0.8)', padding: '4px', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
           <button
             onClick={() => setActiveTab('upload')}
             style={{
