@@ -18,23 +18,34 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState('');
   
-  const [dbConnected, setDbConnected] = useState(true);
+  const [dbConnected, setDbConnected] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [historyList, setHistoryList] = useState([]);
 
   // Check health and load MongoDB history on mount
   useEffect(() => {
-    async function initSystem() {
+    async function checkDb() {
       try {
-        const health = await api.getHealth();
-        setDbConnected(health?.database?.status === 'connected');
+        const dbStatus = await api.getDbStatus();
+        if (dbStatus?.status === 'connected') {
+          setDbConnected(true);
+        } else {
+          const health = await api.getHealth();
+          setDbConnected(health?.database?.status === 'connected');
+        }
       } catch {
         setDbConnected(false);
       }
+    }
 
+    async function initSystem() {
+      await checkDb();
       loadHistory();
     }
+
     initSystem();
+    const interval = setInterval(checkDb, 15000);
+    return () => clearInterval(interval);
   }, []);
 
   const loadHistory = async () => {

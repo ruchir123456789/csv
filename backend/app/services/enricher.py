@@ -346,8 +346,11 @@ class ProductEnricher:
         query_str = urllib.parse.quote(f"{brand_clean} {model_clean} {desc_clean}".strip())
         source_url = f"https://duckduckgo.com/?q={query_str}"
 
+        # 1. First attempt Open Icecat lookup
+        icecat_data = await IcecatService.fetch_product_data(brand_clean, model_clean, gtin)
+
         # If Icecat returned a matched catalog record with title and image
-        if icecat_data.get("icecat_status") == "MATCHED":
+        if icecat_data and icecat_data.get("icecat_status") == "MATCHED":
             image_url = icecat_data.get("product_image_url")
             if not image_url or image_url == "N/A":
                 cat = icecat_data.get("icecat_category", "")

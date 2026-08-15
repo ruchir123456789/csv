@@ -140,21 +140,28 @@ export default function Header({ activeTab, setActiveTab, hasData, dbConnected, 
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            padding: '6px 12px',
+            padding: '6px 14px',
             borderRadius: '9999px',
-            background: 'rgba(15, 23, 42, 0.9)',
-            border: '1px solid var(--border-subtle)',
+            background: dbConnected ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+            border: `1px solid ${dbConnected ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
             fontSize: '0.75rem',
-            color: 'var(--text-muted)'
+            transition: 'all 0.3s ease'
           }}>
-            <Database size={13} color={dbConnected ? '#10b981' : '#f59e0b'} />
-            <span>MongoDB: {dbConnected ? 'Online' : 'Connected'}</span>
+            <Database size={13} color={dbConnected ? '#10b981' : '#ef4444'} />
+            <span style={{
+              color: dbConnected ? '#34d399' : '#f87171',
+              fontWeight: '600',
+              letterSpacing: '0.02em'
+            }}>
+              MongoDB: {dbConnected ? 'Connected' : 'Offline'}
+            </span>
             <div style={{
-              width: '7px',
-              height: '7px',
+              width: '8px',
+              height: '8px',
               borderRadius: '50%',
-              background: dbConnected ? '#10b981' : '#f59e0b',
-              boxShadow: dbConnected ? '0 0 8px #10b981' : 'none'
+              background: dbConnected ? '#10b981' : '#ef4444',
+              boxShadow: dbConnected ? '0 0 10px rgba(16, 185, 129, 0.8)' : '0 0 8px rgba(239, 68, 68, 0.6)',
+              animation: dbConnected ? 'pulse 2s infinite' : 'none'
             }} />
           </div>
         </div>

@@ -1,20 +1,41 @@
 import axios from 'axios';
 
-// In production, uses the deployed backend URL (e.g. https://your-backend.onrender.com)
-// In local development, uses the relative path with Vite proxy
-const SERVER_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+// In production or custom env, uses the deployed backend URL (e.g. https://your-backend.onrender.com)
+// In local development, falls back to direct http://127.0.0.1:8000 if not proxying
+const getBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL.replace(/\/+$/, '');
+  }
+  // When running locally under static serve (like port 3000, 5000, etc.) without vite proxy
+  if (typeof window !== 'undefined' && window.location.hostname === 'localhost' && window.location.port !== '8000' && window.location.port !== '5173') {
+    return 'http://127.0.0.1:8000';
+  }
+  return '';
+};
+
+const SERVER_URL = getBaseUrl();
 const API_BASE = `${SERVER_URL}/api`;
 
 export const api = {
-  // System Health
+  // System Health & Database Status
   async getHealth() {
-    const res = await axios.get(`${SERVER_URL}/health`);
-    return res.data;
+    try {
+      const res = await axios.get(`${SERVER_URL}/health`);
+      return res.data;
+    } catch {
+      const res = await axios.get('http://127.0.0.1:8000/health');
+      return res.data;
+    }
   },
 
   async getDbStatus() {
-    const res = await axios.get(`${API_BASE}/db/status`);
-    return res.data;
+    try {
+      const res = await axios.get(`${API_BASE}/db/status`);
+      return res.data;
+    } catch {
+      const res = await axios.get('http://127.0.0.1:8000/api/db/status');
+      return res.data;
+    }
   },
 
   // Upload & Enrich CSV with Open Icecat + Web Scraping
